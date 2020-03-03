@@ -252,6 +252,7 @@ class kb_concoctTest(unittest.TestCase):
                                              'no_total_coverage': '--no_total_coverage',
                                              'binned_contig_name': 'concoct_bin_obj',
                                              'reads_list': [self.int1_oldstyle_reads_ref] })
+        self._test_bc_headers(ret)
 
     def test_run_concoct_hisat2(self):
         method_name = 'test_run_concoct_hisat2'
@@ -367,3 +368,34 @@ class kb_concoctTest(unittest.TestCase):
                                              'no_total_coverage': '--no_total_coverage',
                                              'binned_contig_name': 'concoct_bin_obj',
                                              'reads_list': [self.int1_oldstyle_reads_ref] })
+
+
+    def _test_bc_headers(self, ret):
+       
+        bc_upa = ret[0]['binned_contig_obj_ref']
+
+        bc_objData = self.dfu.get_objects({
+            'object_refs': [bc_upa]
+            })['data'][0]['data']
+
+        assembly_objData = self.dfu.get_objects({
+            'object_refs': [bc_objData['assembly_ref']]
+            })['data'][0]['data']
+
+
+        bc_header_l = sum([list(bin['contigs'].keys()) for bin in bc_objData['bins']], [])
+        assembly_header_l = list(assembly_objData['contigs'].keys())
+
+        assert len(bc_header_l) > 0 and len(assembly_header_l) > 0
+
+        print('Sampling headers ...', bc_header_l[0], assembly_header_l[0])
+
+        bc_header_set = set(bc_header_l)
+        assembly_header_set = set(assembly_header_l)
+
+        if len(bc_header_set) < len(bc_header_l):
+            print('Warning: BinnedContigs headers not unique')
+        if len(assembly_header_set) < len(assembly_header_l):
+            print('Warning: Assembly headers not unique')
+
+        assert bc_header_set.issubset(assembly_header_set)

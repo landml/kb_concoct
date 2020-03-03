@@ -15,6 +15,10 @@ from installed_clients.MetagenomeUtilsClient import MetagenomeUtils
 from installed_clients.ReadsUtilsClient import ReadsUtils
 # from installed_clients.KBParallelClient import KBParallel
 
+
+from .fasta import HeaderRenaming
+
+
 # for future expansion
 # from kb_concoct.BinningUtilities import BinningUtil as bu
 
@@ -41,6 +45,7 @@ class ConcoctUtil:
         self.ru = ReadsUtils(self.callback_url)
         self.au = AssemblyUtil(self.callback_url)
         self.mgu = MetagenomeUtils(self.callback_url)
+        self.fhr = HeaderRenaming()
         # self.parallel_runner = KBParallel(self.callback_url)
 
     # def set_up_parallel_tasks(self, task_params):
@@ -192,12 +197,19 @@ class ConcoctUtil:
         # remove spaces from fasta headers because that breaks bedtools
         assembly_clean = os.path.abspath(assembly).split('.fa')[0] + "_clean.fa"
 
+        # file to dump the mapping from new headers to old
+        header_mapping_filepath = os.path.join(self.scratch, 'header_mapping_' + str(uuid.uuid4()))
+
+        self.fhr.rename_fasta_headers(assembly, fasta_filepath_new=assembly_clean, cache_filepath=header_mapping_filepath)
+
+        """
         command = '/bin/bash reformat.sh in={} out={} addunderscore overwrite=true'.format(assembly, assembly_clean)
 
         log('running reformat command: {}'.format(command))
         out, err = self._run_command(command)
-
+        """
         return assembly_clean
+
 
     def generate_stats_for_genome_bins(self, task_params, genome_bin_fna_file, bbstats_output_file):
         """
@@ -572,6 +584,16 @@ class ConcoctUtil:
                               file, os.path.abspath(path_to_concoct_result_bins) + '/bin.' +
                               file.split('.fa')[0].zfill(3) + '.fasta')  # need to change to 4 digits
 
+    def revert_fasta_headers(self, task_params):
+        path_to_concoct_result_bins = os.path.join(
+            self.scratch,
+            self.BINNER_RESULT_DIRECTORY, 
+            self.BINNER_BIN_RESULT_DIR
+            )
+        for filepath in [os.path.join(path_to_concoct_result_bins, filename) for filename in os.listdir(path_to_concoct_result_bins)]:
+            self.fhr.revert_fasta_headers(filepath)
+
+
     def make_binned_contig_summary_file_for_binning_apps(self, task_params):
         """
         generate_command: generate binned contig summary command
@@ -821,6 +843,9 @@ class ConcoctUtil:
 
         # run fasta renaming
         self.rename_and_standardize_bin_names(task_params)
+        
+        # revert fasta headers in bins
+        self.revert_fasta_headers(task_params)
 
         self.make_binned_contig_summary_file_for_binning_apps(task_params)
 
