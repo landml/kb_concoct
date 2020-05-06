@@ -1,5 +1,5 @@
 {
-    "ver": "1.3.2",
+    "ver": "1.3.3",
     "authors": [
         "seanjungbluth"
     ],
@@ -71,12 +71,6 @@
                         "display": "Bowtie2 (very-sensitive)",
                         "id": "bowtie2_very_sensitive",
                         "ui_name": "Bowtie2 (very-sensitive)"
-                    },
-                    {
-                        "value": "bwa",
-                        "display": "BWA-MEM",
-                        "id": "bwa",
-                        "ui_name": "BWA-MEM"
                     },
                     {
                         "value": "hisat2",

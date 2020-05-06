@@ -251,7 +251,6 @@ class kb_concoctTest(unittest.TestCase):
         # puts assembly object onto shock
         cls.assembly_ref1 = cls.au.save_assembly_from_fasta(assembly_params1)
 
-
         #
         # building Assembly
         #
@@ -269,8 +268,6 @@ class kb_concoctTest(unittest.TestCase):
         # puts assembly object onto shock
         cls.assembly_ref2 = cls.au.save_assembly_from_fasta(assembly_params2)
 
-
-
     def getWsClient(self):
         return self.__class__.wsClient
 
@@ -284,68 +281,68 @@ class kb_concoctTest(unittest.TestCase):
         return self.__class__.ctx
 
 
-    def test_bad_run_concoct_params(self):
-        method_name = 'test_bad_run_concoct_params'
-        print ("\n=================================================================")
-        print ("RUNNING "+method_name+"()")
-        print ("=================================================================\n")
+    # def test_bad_run_concoct_params(self):
+    #     method_name = 'test_bad_run_concoct_params'
+    #     print ("\n=================================================================")
+    #     print ("RUNNING "+method_name+"()")
+    #     print ("=================================================================\n")
+    #
+    #     invalidate_input_params = {
+    #       'missing_assembly_ref': 'assembly_ref1',
+    #       'binned_contig_name': 'binned_contig_name',
+    #       'workspace_name': 'workspace_name',
+    #       'reads_list': 'reads_list',
+    #       'read_mapping_tool': 'read_mapping_tool'
+    #     }
+    #     with self.assertRaisesRegex(
+    #                 ValueError, '"assembly_ref" parameter is required, but missing'):
+    #         self.getImpl().run_kb_concoct(self.getContext(), invalidate_input_params)
+    #
+    #     invalidate_input_params = {
+    #       'assembly_ref': 'assembly_ref1',
+    #       'missing_binned_contig_name': 'binned_contig_name',
+    #       'workspace_name': 'workspace_name',
+    #       'reads_list': 'reads_list',
+    #       'read_mapping_tool': 'read_mapping_tool'
+    #     }
+    #     with self.assertRaisesRegex(
+    #                 ValueError, '"binned_contig_name" parameter is required, but missing'):
+    #         self.getImpl().run_kb_concoct(self.getContext(), invalidate_input_params)
+    #
+    #     invalidate_input_params = {
+    #       'assembly_ref': 'assembly_ref1',
+    #       'binned_contig_name': 'binned_contig_name',
+    #       'missing_workspace_name': 'workspace_name',
+    #       'reads_list': 'reads_list',
+    #       'read_mapping_tool': 'read_mapping_tool'
+    #     }
+    #     with self.assertRaisesRegex(
+    #                 ValueError, '"workspace_name" parameter is required, but missing'):
+    #         self.getImpl().run_kb_concoct(self.getContext(), invalidate_input_params)
+    #
+    #     invalidate_input_params = {
+    #       'assembly_ref': 'assembly_ref1',
+    #       'binned_contig_name': 'binned_contig_name',
+    #       'workspace_name': 'workspace_name',
+    #       'missing_reads_list': 'reads_list',
+    #       'read_mapping_tool': 'read_mapping_tool'
+    #     }
+    #     with self.assertRaisesRegex(
+    #                 ValueError, '"reads_list" parameter is required, but missing'):
+    #         self.getImpl().run_kb_concoct(self.getContext(), invalidate_input_params)
+    #
+    #     invalidate_input_params = {
+    #       'assembly_ref': 'assembly_ref1',
+    #       'binned_contig_name': 'binned_contig_name',
+    #       'workspace_name': 'workspace_name',
+    #       'reads_list': 'reads_list',
+    #       'missing_read_mapping_tool': 'read_mapping_tool'
+    #     }
+    #     with self.assertRaisesRegex(
+    #                 ValueError, '"read_mapping_tool" parameter is required, but missing'):
+    #         self.getImpl().run_kb_concoct(self.getContext(), invalidate_input_params)
 
-        invalidate_input_params = {
-          'missing_assembly_ref': 'assembly_ref1',
-          'binned_contig_name': 'binned_contig_name',
-          'workspace_name': 'workspace_name',
-          'reads_list': 'reads_list',
-          'read_mapping_tool': 'read_mapping_tool'
-        }
-        with self.assertRaisesRegex(
-                    ValueError, '"assembly_ref" parameter is required, but missing'):
-            self.getImpl().run_kb_concoct(self.getContext(), invalidate_input_params)
-
-        invalidate_input_params = {
-          'assembly_ref': 'assembly_ref1',
-          'missing_binned_contig_name': 'binned_contig_name',
-          'workspace_name': 'workspace_name',
-          'reads_list': 'reads_list',
-          'read_mapping_tool': 'read_mapping_tool'
-        }
-        with self.assertRaisesRegex(
-                    ValueError, '"binned_contig_name" parameter is required, but missing'):
-            self.getImpl().run_kb_concoct(self.getContext(), invalidate_input_params)
-
-        invalidate_input_params = {
-          'assembly_ref': 'assembly_ref1',
-          'binned_contig_name': 'binned_contig_name',
-          'missing_workspace_name': 'workspace_name',
-          'reads_list': 'reads_list',
-          'read_mapping_tool': 'read_mapping_tool'
-        }
-        with self.assertRaisesRegex(
-                    ValueError, '"workspace_name" parameter is required, but missing'):
-            self.getImpl().run_kb_concoct(self.getContext(), invalidate_input_params)
-
-        invalidate_input_params = {
-          'assembly_ref': 'assembly_ref1',
-          'binned_contig_name': 'binned_contig_name',
-          'workspace_name': 'workspace_name',
-          'missing_reads_list': 'reads_list',
-          'read_mapping_tool': 'read_mapping_tool'
-        }
-        with self.assertRaisesRegex(
-                    ValueError, '"reads_list" parameter is required, but missing'):
-            self.getImpl().run_kb_concoct(self.getContext(), invalidate_input_params)
-
-        invalidate_input_params = {
-          'assembly_ref': 'assembly_ref1',
-          'binned_contig_name': 'binned_contig_name',
-          'workspace_name': 'workspace_name',
-          'reads_list': 'reads_list',
-          'missing_read_mapping_tool': 'read_mapping_tool'
-        }
-        with self.assertRaisesRegex(
-                    ValueError, '"read_mapping_tool" parameter is required, but missing'):
-            self.getImpl().run_kb_concoct(self.getContext(), invalidate_input_params)
-
-    # 
+    #
     # def test_run_concoct_multiple_read_input_test1(self):
     #     method_name = 'test_run_concoct_multiple_read_input_test1'
     #     print ("\n=================================================================")
@@ -391,30 +388,7 @@ class kb_concoctTest(unittest.TestCase):
                                              'no_total_coverage': '--no_total_coverage',
                                              'binned_contig_name': 'concoct_bin_obj',
                                              'reads_list': [self.int3_oldstyle_reads_ref, self.int4_oldstyle_reads_ref, self.int5_oldstyle_reads_ref, self.int6_oldstyle_reads_ref, self.int7_oldstyle_reads_ref] })
-
-    def test_run_concoct_minimap2(self):
-        method_name = 'test_run_concoct_minimap2'
-        print ("\n=================================================================")
-        print ("RUNNING "+method_name+"()")
-        print ("=================================================================\n")
-
-        # concoct should run to completion here
-        ret = self.getImpl().run_kb_concoct(self.getContext(),
-                                            {'workspace_name': self.getWsName(),
-                                             'assembly_ref': self.assembly_ref1,
-                                             'read_mapping_tool': 'minimap2',
-                                             'min_contig_length': 3000,
-                                             'contig_split_size': 10000,
-                                             'contig_split_overlap': 0,
-                                             'kmer_size': 4,
-                                             'max_clusters_for_vgmm': 400,
-                                             'max_iterations_for_vgmm': 500,
-                                             'total_percentage_pca': 90,
-                                             'no_cov_normalization': '--no_cov_normalization',
-                                             'no_total_coverage': '--no_total_coverage',
-                                             'binned_contig_name': 'concoct_bin_obj',
-                                             'reads_list': [self.int1_oldstyle_reads_ref] })
-        self._test_bc_headers(ret)
+#                                             'reads_list': [self.int3_oldstyle_reads_ref, self.int4_oldstyle_reads_ref, self.int7_oldstyle_reads_ref] })
 
     # def test_run_concoct_hisat2(self):
     #     method_name = 'test_run_concoct_hisat2'
@@ -438,30 +412,7 @@ class kb_concoctTest(unittest.TestCase):
     #                                          'no_total_coverage': '--no_total_coverage',
     #                                          'binned_contig_name': 'concoct_bin_obj',
     #                                          'reads_list': [self.int1_oldstyle_reads_ref] })
-    #
-    # def test_run_concoct_bwa(self):
-    #     method_name = 'test_run_concoct_bwa'
-    #     print ("\n=================================================================")
-    #     print ("RUNNING "+method_name+"()")
-    #     print ("=================================================================\n")
-    #
-    #     # concoct should run to completion here
-    #     ret = self.getImpl().run_kb_concoct(self.getContext(),
-    #                                         {'workspace_name': self.getWsName(),
-    #                                          'assembly_ref': self.assembly_ref1,
-    #                                          'read_mapping_tool': 'bwa',
-    #                                          'min_contig_length': 3000,
-    #                                          'contig_split_size': 10000,
-    #                                          'contig_split_overlap': 0,
-    #                                          'kmer_size': 4,
-    #                                          'max_clusters_for_vgmm': 400,
-    #                                          'max_iterations_for_vgmm': 500,
-    #                                          'total_percentage_pca': 90,
-    #                                          'no_cov_normalization': '--no_cov_normalization',
-    #                                          'no_total_coverage': '--no_total_coverage',
-    #                                          'binned_contig_name': 'concoct_bin_obj',
-    #                                          'reads_list': [self.int1_oldstyle_reads_ref] })
-    #
+
     # def test_run_concoct_bbmap(self):
     #     method_name = 'test_run_concoct_bbmap'
     #     print ("\n=================================================================")
@@ -531,6 +482,30 @@ class kb_concoctTest(unittest.TestCase):
     #                                          'binned_contig_name': 'concoct_bin_obj',
     #                                          'reads_list': [self.int1_oldstyle_reads_ref] })
     #
+    #
+    # def test_run_concoct_minimap2(self):
+    #     method_name = 'test_run_concoct_minimap2'
+    #     print ("\n=================================================================")
+    #     print ("RUNNING "+method_name+"()")
+    #     print ("=================================================================\n")
+    #
+    #     # concoct should run to completion here
+    #     ret = self.getImpl().run_kb_concoct(self.getContext(),
+    #                                         {'workspace_name': self.getWsName(),
+    #                                          'assembly_ref': self.assembly_ref1,
+    #                                          'read_mapping_tool': 'minimap2',
+    #                                          'min_contig_length': 3000,
+    #                                          'contig_split_size': 10000,
+    #                                          'contig_split_overlap': 0,
+    #                                          'kmer_size': 4,
+    #                                          'max_clusters_for_vgmm': 400,
+    #                                          'max_iterations_for_vgmm': 500,
+    #                                          'total_percentage_pca': 90,
+    #                                          'no_cov_normalization': '--no_cov_normalization',
+    #                                          'no_total_coverage': '--no_total_coverage',
+    #                                          'binned_contig_name': 'concoct_bin_obj',
+    #                                          'reads_list': [self.int1_oldstyle_reads_ref] })
+    #     self._test_bc_headers(ret)
 
     def _test_bc_headers(self, ret):
 

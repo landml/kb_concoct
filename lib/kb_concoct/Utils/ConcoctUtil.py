@@ -266,8 +266,11 @@ class ConcoctUtil:
     def deinterlace_raw_reads(self, fastq):
         fastq_forward = fastq.split('.fastq')[0] + "_forward.fastq"
         fastq_reverse = fastq.split('.fastq')[0] + "_reverse.fastq"
-        command = 'reformat.sh in={} out1={} out2={} overwrite=true'.format(fastq, fastq_forward, fastq_reverse)
-        self._run_command(command)
+        command = 'deinterleave_fastq.sh < {} {} {}'.format(fastq, fastq_forward, fastq_reverse)
+        try:
+            self._run_command(command)
+        except:
+            raise Exception("Cannot deinterlace fastq file!")
         return (fastq_forward, fastq_reverse)
 
     def run_read_mapping_interleaved_pairs_mode(self, task_params, assembly_clean, fastq, sam):
@@ -280,14 +283,6 @@ class ConcoctUtil:
             command += 'in={} '.format(fastq)
             command += 'out={} '.format(sam)
             command += 'fast interleaved=true mappedonly nodisk overwrite'
-        elif task_params['read_mapping_tool'] == 'bwa':
-            (fastq_forward, fastq_reverse) = self.deinterlace_raw_reads(fastq)
-            command = 'bwa index {} && '.format(assembly_clean)
-            command += 'bwa mem -t {} '.format(self.MAPPING_THREADS)
-            command += '{} '.format(assembly_clean)
-            command += '{} '.format(fastq_forward)
-            command += '{} > '.format(fastq_reverse)
-            command += '{}'.format(sam)
         elif task_params['read_mapping_tool'] == 'bowtie2_default':
             (fastq_forward, fastq_reverse) = self.deinterlace_raw_reads(fastq)
             bt2index = os.path.basename(assembly_clean) + '.bt2'
@@ -341,12 +336,6 @@ class ConcoctUtil:
             command += 'out={} '.format(sam)
             command += 'fast interleaved=false mappedonly nodisk overwrite'
             # BBMap is deterministic without the deterministic flag if using single-ended reads
-        elif task_params['read_mapping_tool'] == 'bwa':
-            command = 'bwa index {} && '.format(assembly_clean)
-            command += 'bwa mem -t {} '.format(self.MAPPING_THREADS)
-            command += '{} '.format(assembly_clean)
-            command += '{} > '.format(fastq)
-            command += '{}'.format(sam)
         elif task_params['read_mapping_tool'] == 'bowtie2_default':
             bt2index = os.path.basename(assembly_clean) + '.bt2'
             command = 'bowtie2-build -f {} '.format(assembly_clean)
@@ -587,7 +576,7 @@ class ConcoctUtil:
     def revert_fasta_headers(self, task_params):
         path_to_concoct_result_bins = os.path.join(
             self.scratch,
-            self.BINNER_RESULT_DIRECTORY, 
+            self.BINNER_RESULT_DIRECTORY,
             self.BINNER_BIN_RESULT_DIR
             )
         for filepath in [os.path.join(path_to_concoct_result_bins, filename) for filename in os.listdir(path_to_concoct_result_bins)]:
@@ -843,7 +832,7 @@ class ConcoctUtil:
 
         # run fasta renaming
         self.rename_and_standardize_bin_names(task_params)
-        
+
         # revert fasta headers in bins
         self.revert_fasta_headers(task_params)
 

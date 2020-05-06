@@ -8,6 +8,10 @@ ToDo
 * Expose seed parameters (e.g. HISAT2)
 * Update documentation and inline comments
 
+1.3.3
+-----
+* Removed BWA-MEM read mapper
+* Changed to use a new deinterlace reads script
 
 1.3.2
 -----

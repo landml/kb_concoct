@@ -8,7 +8,7 @@ MAINTAINER Sean Jungbluth <sjungbluth@lbl.gov>
 
 
 # To install all the dependencies
-RUN apt-get update && apt-get install -y libgsl0-dev git zip unzip bedtools bwa bowtie2 wget python-pip && \
+RUN apt-get update && apt-get install -y libgsl0-dev git zip unzip bedtools bowtie2 wget python-pip && \
     apt-get install -y r-base r-cran-gplots
 
 # To download the CONCOCT software from Github and install it and its requirements

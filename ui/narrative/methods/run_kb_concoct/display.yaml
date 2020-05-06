@@ -46,7 +46,7 @@ parameters :
     read_mapping_tool :
         ui-name : Read Mapping Tool
         short-hint : tool to use for read mapping (default bowtie2)
-        long-hint  : tool to use for read mapping - options BBmap, Bowtie2 (default), Bowtie2 (very-sensitive), BWA-MEM, HISAT2, minimap2 - (default bowtie2 default mode)
+        long-hint  : tool to use for read mapping - options BBmap, Bowtie2 (default), Bowtie2 (very-sensitive), HISAT2, minimap2 - (default bowtie2 default mode)
 
     min_contig_length :
         ui-name : Minimum Contig Length (>1000bp)
