@@ -18,6 +18,11 @@ from installed_clients.ReadsUtilsClient import ReadsUtils
 
 from .fasta import HeaderRenaming
 
+from random import seed
+from random import randint
+# seed random number generator
+seed(1)
+
 
 # for future expansion
 # from kb_concoct.BinningUtilities import BinningUtil as bu
@@ -276,7 +281,10 @@ class ConcoctUtil:
     def run_read_mapping_interleaved_pairs_mode(self, task_params, assembly_clean, fastq, sam):
         read_mapping_tool = task_params['read_mapping_tool']
         log("running {} mapping in interleaved mode.".format(read_mapping_tool))
+        random_seed_int = randint(0, 999999999)
+        log("randomly selected seed (integer) used for read mapping is: {}".format(random_seed_int))
         if task_params['read_mapping_tool'] == 'bbmap':
+            log("Warning: bbmap does not support setting random seeds, so results are not reproducible.")
             command = 'bbmap.sh -Xmx{} '.format(self.BBMAP_MEM)
             command += 'threads={} '.format(self.MAPPING_THREADS)
             command += 'ref={} '.format(assembly_clean)
@@ -288,6 +296,7 @@ class ConcoctUtil:
             bt2index = os.path.basename(assembly_clean) + '.bt2'
             command = 'bowtie2-build -f {} '.format(assembly_clean)
             command += '--threads {} '.format(self.MAPPING_THREADS)
+            command += '--seed {} '.format(random_seed_int)
             command += '{} && '.format(bt2index)
             command += 'bowtie2 -x {} '.format(bt2index)
             command += '-1 {} '.format(fastq_forward)
@@ -299,6 +308,7 @@ class ConcoctUtil:
             bt2index = os.path.basename(assembly_clean) + '.bt2'
             command = 'bowtie2-build -f {} '.format(assembly_clean)
             command += '--threads {} '.format(self.MAPPING_THREADS)
+            command += '--seed {} '.format(random_seed_int)
             command += '{} && '.format(bt2index)
             command += 'bowtie2 --very-sensitive -x {} '.format(bt2index)
             command += '-1 {} '.format(fastq_forward)
@@ -308,6 +318,7 @@ class ConcoctUtil:
         elif task_params['read_mapping_tool'] == 'minimap2':
             (fastq_forward, fastq_reverse) = self.deinterlace_raw_reads(fastq)
             command = 'minimap2 -ax sr -t {} '.format(self.MAPPING_THREADS)
+            command += '--seed {} '.format(random_seed_int)
             command += '{} '.format(assembly_clean)
             command += '{} '.format(fastq_forward)
             command += '{} > '.format(fastq_reverse)
@@ -321,6 +332,7 @@ class ConcoctUtil:
             command += '-1 {} '.format(fastq_forward)
             command += '-2 {} '.format(fastq_reverse)
             command += '-S {} '.format(sam)
+            command += '--seed {} '.format(random_seed_int)
             command += '--threads {}'.format(self.MAPPING_THREADS)
         log('running alignment command: {}'.format(command))
         out, err = self._run_command(command)
@@ -328,7 +340,10 @@ class ConcoctUtil:
     def run_read_mapping_unpaired_mode(self, task_params, assembly_clean, fastq, sam):
         read_mapping_tool = task_params['read_mapping_tool']
         log("running {} mapping in single-end (unpaired) mode.".format(read_mapping_tool))
+        random_seed_int = randint(0, 999999999)
+        log("randomly selected seed (integer) used for read mapping is: {}".format(random_seed_int))
         if task_params['read_mapping_tool'] == 'bbmap':
+            log("Warning: bbmap does not support setting random seeds, so results are not reproducible.")
             command = 'bbmap.sh -Xmx{} '.format(self.BBMAP_MEM)
             command += 'threads={} '.format(self.MAPPING_THREADS)
             command += 'ref={} '.format(assembly_clean)
@@ -340,6 +355,7 @@ class ConcoctUtil:
             bt2index = os.path.basename(assembly_clean) + '.bt2'
             command = 'bowtie2-build -f {} '.format(assembly_clean)
             command += '--threads {} '.format(self.MAPPING_THREADS)
+            command += '--seed {} '.format(random_seed_int)
             command += '{} && '.format(bt2index)
             command += 'bowtie2 -x {} '.format(bt2index)
             command += '-U {} '.format(fastq)
@@ -349,6 +365,7 @@ class ConcoctUtil:
             bt2index = os.path.basename(assembly_clean) + '.bt2'
             command = 'bowtie2-build -f {} '.format(assembly_clean)
             command += '--threads {} '.format(self.MAPPING_THREADS)
+            command += '--seed {} '.format(random_seed_int)
             command += '{} && '.format(bt2index)
             command += 'bowtie2 --very-sensitive -x {} '.format(bt2index)
             command += '-U {} '.format(fastq)
@@ -356,6 +373,7 @@ class ConcoctUtil:
             command += '-S {}'.format(sam)
         elif task_params['read_mapping_tool'] == 'minimap2':
             command = 'minimap2 -ax sr -t {} '.format(self.MAPPING_THREADS)
+            command += '--seed {} '.format(random_seed_int)
             command += '{} '.format(assembly_clean)
             command += '{} > '.format(fastq)
             command += '{}'.format(sam)
@@ -366,6 +384,7 @@ class ConcoctUtil:
             command += 'hisat2 -x {} '.format(ht2index)
             command += '-U {} '.format(fastq)
             command += '-S {} '.format(sam)
+            command += '--seed {} '.format(random_seed_int)
             command += '--threads {}'.format(self.MAPPING_THREADS)
         log('running alignment command: {}'.format(command))
         out, err = self._run_command(command)

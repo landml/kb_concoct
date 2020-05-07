@@ -5,12 +5,12 @@ ToDo
 -----
 * Add kb_parallels support - see kbase-metabat example
 * Add different ways to extract coverage (e.g. jgi_summarize_bam_contig_depths vs coverM, vs ?)
-* Expose seed parameters (e.g. HISAT2)
 * Update documentation and inline comments
 
 1.3.3
 -----
-* Removed BWA-MEM read mapper
+* Seed parameters set for all read mappers except bbmap.sh
+* Removed BWA-MEM read mapper because no seed parameter available
 * Changed to use a new deinterlace reads script
 
 1.3.2
