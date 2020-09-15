@@ -8,8 +8,11 @@ MAINTAINER Sean Jungbluth <sjungbluth@lbl.gov>
 
 
 # To install all the dependencies
-RUN apt-get update && apt-get install -y libgsl0-dev git zip unzip bedtools bowtie2 wget python-pip && \
+RUN apt-get update && apt-get install -y libgsl0-dev samtools git zip unzip bedtools bowtie2 wget python-pip && \
     apt-get install -y r-base r-cran-gplots
+
+# Need a recent version of numpy to work with CONCOCT
+RUN conda install -c anaconda numpy
 
 # To download the CONCOCT software from Github and install it and its requirements
 RUN git clone https://github.com/BinPro/CONCOCT && cd /CONCOCT && \
@@ -34,7 +37,6 @@ WORKDIR /kb/module
 
 ENV PATH=/kb/module/lib/kb_concoct/bin:$PATH
 ENV PATH=/kb/module/lib/kb_concoct/bin/bbmap:$PATH
-ENV PATH=/kb/module/lib/kb_concoct/bin/samtools/bin:$PATH
 ENV PATH=/kb/module/lib/kb_concoct/bin/minimap2-2.17/:$PATH
 ENV PATH=/kb/module/lib/kb_concoct/bin/hisat2-2.1.0/:$PATH
 ENV PATH=/kb/deployment/bin/CONCOCT/bin:/kb/deployment/bin/CONCOCT/scripts:$PATH
