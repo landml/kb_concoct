@@ -283,7 +283,7 @@ class ConcoctUtil:
         log("running {} mapping in interleaved mode.".format(read_mapping_tool))
         random_seed_int = randint(0, 999999999)
         log("randomly selected seed (integer) used for read mapping is: {}".format(random_seed_int))
-        if task_params['read_mapping_tool'] == 'bbmap':
+        if task_params['read_mapping_tool'] == 'bbmap_fast':
             log("Warning: bbmap does not support setting random seeds, so results are not reproducible.")
             command = 'bbmap.sh -Xmx{} '.format(self.BBMAP_MEM)
             command += 'threads={} '.format(self.MAPPING_THREADS)
@@ -291,6 +291,23 @@ class ConcoctUtil:
             command += 'in={} '.format(fastq)
             command += 'out={} '.format(sam)
             command += 'fast interleaved=true mappedonly nodisk overwrite'
+        elif task_params['read_mapping_tool'] == 'bbmap_default':
+            log("Warning: bbmap does not support setting random seeds, so results are not reproducible.")
+            command = 'bbmap.sh -Xmx{} '.format(self.BBMAP_MEM)
+            command += 'threads={} '.format(self.MAPPING_THREADS)
+            command += 'ref={} '.format(assembly_clean)
+            command += 'in={} '.format(fastq)
+            command += 'out={} '.format(sam)
+            command += 'interleaved=true mappedonly nodisk overwrite'
+        elif task_params['read_mapping_tool'] == 'bbmap_very_sensitive':
+            log("Warning: bbmap does not support setting random seeds, so results are not reproducible.")
+            command = 'bbmap.sh -Xmx{} '.format(self.BBMAP_MEM)
+            command += 'threads={} '.format(self.MAPPING_THREADS)
+            command += 'ref={} '.format(assembly_clean)
+            command += 'in={} '.format(fastq)
+            command += 'out={} '.format(sam)
+            command += 'vslow=true '
+            command += 'interleaved=true mappedonly nodisk overwrite'
         elif task_params['read_mapping_tool'] == 'bowtie2_default':
             (fastq_forward, fastq_reverse) = self.deinterlace_raw_reads(fastq)
             bt2index = os.path.basename(assembly_clean) + '.bt2'
@@ -342,7 +359,7 @@ class ConcoctUtil:
         log("running {} mapping in single-end (unpaired) mode.".format(read_mapping_tool))
         random_seed_int = randint(0, 999999999)
         log("randomly selected seed (integer) used for read mapping is: {}".format(random_seed_int))
-        if task_params['read_mapping_tool'] == 'bbmap':
+        if task_params['read_mapping_tool'] == 'bbmap_fast':
             log("Warning: bbmap does not support setting random seeds, so results are not reproducible.")
             command = 'bbmap.sh -Xmx{} '.format(self.BBMAP_MEM)
             command += 'threads={} '.format(self.MAPPING_THREADS)
@@ -350,7 +367,23 @@ class ConcoctUtil:
             command += 'in={} '.format(fastq)
             command += 'out={} '.format(sam)
             command += 'fast interleaved=false mappedonly nodisk overwrite'
-            # BBMap is deterministic without the deterministic flag if using single-ended reads
+        elif task_params['read_mapping_tool'] == 'bbmap_default':
+            log("Warning: bbmap does not support setting random seeds, so results are not reproducible.")
+            command = 'bbmap.sh -Xmx{} '.format(self.BBMAP_MEM)
+            command += 'threads={} '.format(self.MAPPING_THREADS)
+            command += 'ref={} '.format(assembly_clean)
+            command += 'in={} '.format(fastq)
+            command += 'out={} '.format(sam)
+            command += 'interleaved=false mappedonly nodisk overwrite'
+        elif task_params['read_mapping_tool'] == 'bbmap_very_sensitive':
+            log("Warning: bbmap does not support setting random seeds, so results are not reproducible.")
+            command = 'bbmap.sh -Xmx{} '.format(self.BBMAP_MEM)
+            command += 'threads={} '.format(self.MAPPING_THREADS)
+            command += 'ref={} '.format(assembly_clean)
+            command += 'in={} '.format(fastq)
+            command += 'out={} '.format(sam)
+            command += 'vslow=true '
+            command += 'interleaved=false mappedonly nodisk overwrite'
         elif task_params['read_mapping_tool'] == 'bowtie2_default':
             bt2index = os.path.basename(assembly_clean) + '.bt2'
             command = 'bowtie2-build -f {} '.format(assembly_clean)
@@ -816,8 +849,6 @@ class ConcoctUtil:
         cwd = os.getcwd()
         log('changing working dir to {}'.format(result_directory))
         os.chdir(result_directory)
-
-
 
         # set up tasks for kbparallel to run alignments
         # this also submits run_alignments function in parallel

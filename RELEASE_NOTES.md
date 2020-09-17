@@ -7,6 +7,11 @@ ToDo
 * Add different ways to extract coverage (e.g. jgi_summarize_bam_contig_depths vs coverM, vs ?)
 * Update documentation and inline comments
 
+1.3.4
+-----
+* samtools and bbmap now installed via docker
+* bbmap now has multiple modes of operation (default, fast, and very-sensitive)
+
 1.3.3
 -----
 * Seed parameters set for all read mappers except bbmap.sh
