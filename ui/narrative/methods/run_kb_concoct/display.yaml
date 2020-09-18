@@ -101,13 +101,13 @@ description : |
     <p><hr></p>
     <p><i>Implemented for KBase by <a href="mailto:sjungbluth@lbl.gov">Sean Jungbluth(sjungbluth@lbl.gov)</a></i></p>
     <p><hr></p>
-    <p>CONCOCT takes a metagenome assembly and the reads that produced the assembly and organizes the contigs into putative genomes, called "bins".</p>
+    <p>CONCOCT takes a metagenome assembly and the reads that produced the assembly and organizes the contigs into putative genomes, called "bins". CONCOCT uses nucleotide composition information and depth of coverage information to perform binning. </p>
     <p><hr></p>
     <p><b>Configuration:</b></p>
     <p><b><i>Assembly Object:</i></b> The Assembly object is a collection of assembled genome fragments, called "contigs".  These are the items that CONCOCT will bin.  Currently only a single Assembly object is accepted by the CONCOCT App.</p>
     <p><b><i>BinnedContig Object Name:</i></b> The BinnedContig Object represents the directory of binned contigs created by CONCOCT. This object can be used for downstream analysis</p>
     <p><b><i>Read Library Object:</i></b> The read libraries are aligned to the assembly using a selected read mapper, and provide the abundance information for each contig that roughly follows the species abundance.</p>
-    <p><b><i>Minimum Contig Length:</i></b> Contigs that are too short may slow down analysis and not give statistically meaningful nucleotide composition profiles.  A value of 1000 - 2500 bp is a reasonable cutoff.</p>
+    <p><b><i>Minimum Contig Length:</i></b> Contigs that are too short may slow down analysis and not give statistically meaningful nucleotide composition profiles.  A value of 2500 bp is a reasonable cutoff, but as low as 1000 bp can be used.</p>
     <p><b><i>Contig Split Size:</i></b> Contigs are split before clustering to minimize the bias imposed by very large contigs. A value of 5000-10000 bp is a reasonable cutoff.</p>
     <p><b><i>Contig Split Overlap:</i></b> Contigs split before clustering can have varying degrees of overlap.  A value of 0 is most often used.</p>
     <p><b><i>Kmer Length:</i></b> Size of the kmers used during profiling.  A default value of 4 is reasonable to start with.</p>
